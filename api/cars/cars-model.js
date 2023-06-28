@@ -1,12 +1,6 @@
 const knex = require('knex')
 
-const db = knex({
-  client: 'sqlite3',
-  connection: {
-    filename: './data/seeds/dealer.db3',
-  },
-  useNullAsDefault: true
-})
+const db = require('../../data/db-config')
 
 function getAll() {
 return db('cars')
@@ -17,9 +11,9 @@ function getById(id) {
 }
 
 //might be wrong - copied from db2 guided
-async function create(car) {
-  const [id] = await db('cars').insert(car)
-  return getById(id)
+function create(car) {
+  return db('cars').insert(car)
+  .then(([id]) => getById(id))
 }
 
 module.exports = {
